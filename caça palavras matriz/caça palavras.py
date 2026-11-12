@@ -16,21 +16,53 @@ def iniciar_matriz(matriz:list):
             matriz[i][j] = chr(random.randint(ord("A"),ord("Z")))
         #CHR transforma o codigo ascii em simbolo e ORD transforma simbolo em ascii
 
+def validacao(posicoes_ocupadas,linha,coluna):
+    if [linha,coluna] not in posicoes_ocupadas:
+        return True
+    else:
+        return False
+
 def palavra_horizontal(palavra:str,matriz):
-    linha_inicial = random.randint (0,len(matriz) -1)
+    #linha_inicial = random.randint (0,len(matriz) -1)
     #escolhe a linha aleatoria, de zero até o tamanho maxímo de linhas
 
-    max_palavra =len(matriz[0]) - len(palavra)
-    #calucla a posição maxima na matriz (coluna) que a palavra pode ficar
+    #max_palavra =len(matriz[0]) - len(palavra)
+    #calcula a posição maxima na matriz (coluna) que a palavra pode ficar
 
-    sortear_comeco_palavra = random.randint(0,max_palavra) 
+    #sortear_comeco_palavra = random.randint(0,max_palavra) 
+    #sorteia começo da palavra (coluna)
+    contador = 0
+    while contador < 10:
+        linha_inicial = random.randint (0,len(matriz) -1)
+        max_palavra =len(matriz[0]) - len(palavra)
+        sortear_comeco_palavra = random.randint(0, max_palavra)
+        posicoes_validas = True
 
-    for i in range(len(palavra)):
-            #pra cada letra da palavra
-      
-            matriz[linha_inicial] [sortear_comeco_palavra + i] = palavra[i] 
-            #pega a linha escollhida, o começo escolhido (coluna) e a proxima letra adiciona +1 coluna
+        for i in range (len(palavra)):
+            linha = linha_inicial
+            coluna = sortear_comeco_palavra + i
+            resultado = validacao(posicoes_ocupadas,linha,coluna)
+            #valida a linha e coluna baseado no array de posição ocupadas
 
+            if resultado == False:
+                posicoes_validas = False 
+                break
+            #Se cair em uma posição ocupada volta pra o while
+   
+        if posicoes_validas == True:
+                for j in range(len(palavra)):
+                    linha = linha_inicial
+                    coluna = sortear_comeco_palavra + j
+                    #Anda uma casa (Coluna) a cada letra
+                    
+                    posicoes_ocupadas.append([linha ,coluna])
+                    #Add a posição no array
+                    matriz[linha][coluna] = palavra[j]
+                    #Add a letra na sua posição na matriz
+                break
+        contador+= 1 
+        #Se chegar em 10 tentativas inválidas a palavra não será adicionada a matriz
+                
 
 def palavra_vertical(palavra:str,matriz:list):
     coluna_inicial = random.randint(0,len(matriz[0])-1)
@@ -40,7 +72,7 @@ def palavra_vertical(palavra:str,matriz:list):
     sortear_comeco_palavra = random.randint(0,max_palavra)
 
     for i in range (len(palavra)):
-        matriz[sortear_comeco_palavra + i][coluna_inicial] = palavra[i]
+        posicoes_ocupadas.append([sortear_comeco_palavra + i,coluna_inicial])
 
 def diagonal_decressente (palavra:str,matriz:list):
     coluna_max = len(matriz[0]) - len(palavra)
@@ -53,7 +85,7 @@ def diagonal_decressente (palavra:str,matriz:list):
     coluna_atual = sortear_coluna
 
     for i in range (len(palavra)):
-            matriz[linha_atual][coluna_atual] = palavra[i]
+            posicoes_ocupadas.append([linha_atual,coluna_atual])
             linha_atual +=1
             coluna_atual +=1 
 
@@ -75,10 +107,10 @@ def diagonal_crescente(palavra:str,matriz:list):
      linha_atual = sortear_linha
 
      for i in range (len(palavra)):
-          matriz[linha_atual][coluna_atual] = palavra[i]
+          posicoes_ocupadas.append([linha_atual,coluna_atual])
           linha_atual -=1
           coluna_atual +=1
-#TODO colocar palavras reverso, logica add palavras e verificação pra nenhuma palavra cobrir a outra             
+#TODO colocar palavras reverso,Adicionar verificação nos outros sentidos              
 
             
             
@@ -103,6 +135,7 @@ def validar_posicao(matriz):
 
 
 #Main
+posicoes_ocupadas = []
 
 PALAVRAS = ["PYTHON","JAVA","RUST","PHP"]
 
