@@ -65,14 +65,34 @@ def palavra_horizontal(palavra:str,matriz):
                 
 
 def palavra_vertical(palavra:str,matriz:list):
-    coluna_inicial = random.randint(0,len(matriz[0])-1)
+    contador = 0
+    while contador < 10:
+        coluna_inicial = random.randint(0,len(matriz[0])-1)
+                    
+        max_palavra = len(matriz) - len(palavra)
+                    
+        sortear_comeco_palavra = random.randint(0,max_palavra)
 
-    max_palavra = len(matriz) - len(palavra)
+        posicoes_validas = True
 
-    sortear_comeco_palavra = random.randint(0,max_palavra)
+        for i in range (len(palavra)):
+            linha = sortear_comeco_palavra + i
+            coluna = coluna_inicial
+            resultado = validacao(posicoes_ocupadas,linha,coluna)
+           
 
-    for i in range (len(palavra)):
-        posicoes_ocupadas.append([sortear_comeco_palavra + i,coluna_inicial])
+            if resultado == False:
+                            posicoes_validas = False 
+                            break
+            
+        if posicoes_validas == True:
+            for j in range(len(palavra)):
+                linha = sortear_comeco_palavra + j
+                coluna =coluna_inicial
+                posicoes_ocupadas.append([linha ,coluna])
+                matriz[linha][coluna] = palavra[j]
+            break    
+        contador +=1            
 
 def diagonal_decressente (palavra:str,matriz:list):
     coluna_max = len(matriz[0]) - len(palavra)
