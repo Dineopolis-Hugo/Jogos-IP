@@ -95,41 +95,68 @@ def palavra_vertical(palavra:str,matriz:list):
         contador +=1            
 
 def diagonal_decressente (palavra:str,matriz:list):
-    coluna_max = len(matriz[0]) - len(palavra)
-    linha_max = len(matriz) - len(palavra)
+    contador = 0
+    while contador < 10:
+        coluna_max = len(matriz[0]) - len(palavra)
+        linha_max = len(matriz) - len(palavra)
 
-    sortear_linha = random.randint(0,linha_max)
-    sortear_coluna = random.randint(0,coluna_max)
+        sortear_linha = random.randint(0,linha_max)
+        sortear_coluna = random.randint(0,coluna_max)
+        posicoes_validas = True
 
-    linha_atual = sortear_linha
-    coluna_atual = sortear_coluna
+        for i in range (len(palavra)):
+            linha_atual = sortear_linha + i
+            coluna_atual = sortear_coluna + i
+            resultado = validacao(posicoes_ocupadas,linha_atual,coluna_atual)
 
-    for i in range (len(palavra)):
-            posicoes_ocupadas.append([linha_atual,coluna_atual])
-            linha_atual +=1
-            coluna_atual +=1 
+            if resultado == False:
+                 posicoes_validas = False
+                 break
+        if posicoes_validas == True:    
+            for j in range(len(palavra)):
+               
+                linha_atual = sortear_linha + j
+                coluna_atual = sortear_coluna + j 
+                posicoes_ocupadas.append([linha_atual,coluna_atual])
+                matriz[linha_atual][coluna_atual] = palavra[j]
+            break
+        contador+=1
 
 
 
 def diagonal_crescente(palavra:str,matriz:list):
-     max_linha  =  (len(matriz) -1)
-     
-     max_coluna = (len(matriz[0]) - len(palavra))
-     #max de colunas e a quantidade de colunas - tamanho da palavra
+     contador = 0
+     while contador < 10:
+        max_linha  =  (len(matriz) -1)
+        max_coluna = (len(matriz[0]) - len(palavra))
+        #max de colunas e a quantidade de colunas - tamanho da palavra
 
-     sortear_linha = random.randint(len(palavra) - 1, max_linha)
-     #sorteia uma linha entre o tamanho da palavra e o max de linha
-     #esse len palavra é pq se começar com uma linha alta [0,1,2] a palavra sai da matriz
+        sortear_linha = random.randint(len(palavra) - 1, max_linha)
+        #sorteia uma linha entre o tamanho da palavra e o max de linha
+        #esse len palavra é pq se começar com uma linha alta [0,1,2] a palavra sai da matriz
 
-     sortear_coluna = random.randint(0,max_coluna)
+        sortear_coluna = random.randint(0,max_coluna)
+        posicoes_validas = True
+        for i in range (len(palavra)):   
+            coluna_atual = sortear_coluna + i
+            linha_atual = sortear_linha - i
+            resultado = validacao(posicoes_ocupadas,linha_atual,coluna_atual)
 
-     coluna_atual = sortear_coluna
-     linha_atual = sortear_linha
+            if resultado == False:
+                posicoes_validas = False
+                break
 
-     for i in range (len(palavra)):
-          posicoes_ocupadas.append([linha_atual,coluna_atual])
-          linha_atual -=1
-          coluna_atual +=1
+        if posicoes_validas == True:    
+            for j in range(len(palavra)):
+                linha_atual = sortear_linha- j
+                coluna_atual = sortear_coluna + j           
+                posicoes_ocupadas.append([linha_atual,coluna_atual])
+                matriz[linha_atual][coluna_atual] = palavra[j]
+            break
+        contador+=1    
+
+          
+          
 #TODO colocar palavras reverso,Adicionar verificação nos outros sentidos              
 
             
